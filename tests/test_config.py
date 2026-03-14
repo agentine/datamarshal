@@ -25,6 +25,16 @@ class WithExclude:
     )
 
 
+@dataclass_json
+@dataclass
+class WithExcludeNoFcDefault:
+    name: str
+    internal: str = field(
+        default="fallback",
+        metadata={"fieldmarshal": FieldConfig(exclude=True)},
+    )
+
+
 @dataclass_json(letter_case=LetterCase.CAMEL)
 @dataclass
 class CamelModel:
@@ -77,6 +87,11 @@ class TestFieldExclude:
         obj = WithExclude.from_dict({"name": "alice"})
         assert obj.name == "alice"
         assert obj.password == "secret"
+
+    def test_from_dict_exclude_without_fc_default(self) -> None:
+        obj = WithExcludeNoFcDefault.from_dict({"name": "test"})
+        assert obj.name == "test"
+        assert obj.internal == "fallback"
 
 
 class TestLetterCase:

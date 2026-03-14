@@ -250,7 +250,7 @@ def _from_dict_inner(cls: type, data: dict[str, Any]) -> Any:
     for json_key, (field_name, type_hint, fc) in key_map.items():
         if fc and fc.exclude:
             # Use FieldConfig default or dataclass default
-            if fc.default is not dataclasses.MISSING:
+            if fc.default is not _MISSING:
                 kwargs[field_name] = fc.default
             continue
 
