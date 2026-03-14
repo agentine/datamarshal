@@ -1,12 +1,30 @@
 # fieldmarshal
 
+[![PyPI](https://img.shields.io/pypi/v/fieldmarshal)](https://pypi.org/project/fieldmarshal/)
+[![Python](https://img.shields.io/pypi/pyversions/fieldmarshal)](https://pypi.org/project/fieldmarshal/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A modern, lightweight dataclass serialization library for Python — the better alternative to dataclasses-json.
 
 Zero dependencies. Python 3.10+.
 
+## Why fieldmarshal?
+
+[dataclasses-json](https://github.com/lidatong/dataclasses-json) was the go-to library for dataclass JSON serialization, but its maintainer has stepped away and the project is effectively abandoned: no releases since June 2024, no Python 3.13+ support, broken marshmallow compatibility, and 159+ open issues.
+
+fieldmarshal is a clean replacement:
+
+| | dataclasses-json | fieldmarshal |
+|---|---|---|
+| Dependencies | marshmallow, marshmallow-enum, typing-inspect | **None (stdlib only)** |
+| Python support | 3.7–3.12 | **3.10+ (including 3.13+)** |
+| Maintained | No (abandoned 2024) | **Yes** |
+| Type resolution | typing-inspect (fragile) | stdlib introspection |
+| API style | Mixin or decorator | Decorator only (cleaner) |
+
 ## Install
 
-```
+```bash
 pip install fieldmarshal
 ```
 
@@ -226,9 +244,37 @@ Decorator that adds serialization methods to a dataclass.
 - `from_dict(data: dict) -> Self` — class method, reconstruct from dict
 - `from_json(s: str, **kwargs) -> Self` — class method, reconstruct from JSON string
 
+### `FieldConfig`
+
+Per-field serialization configuration. Pass via `dataclasses.field(metadata={"fieldmarshal": FieldConfig(...)})`.
+
+```python
+@dataclass
+class Model:
+    name: str = field(metadata={"fieldmarshal": FieldConfig(field_name="Name")})
+```
+
+**Fields:**
+- `field_name` (`str | None`) — override the JSON key name
+- `exclude` (`bool`, default `False`) — exclude this field from serialization
+- `encoder` (`Callable | None`) — custom encoder for this field
+- `decoder` (`Callable | None`) — custom decoder for this field
+- `default` (`Any`) — default value used when the field is excluded or missing during deserialization
+
+### `LetterCase`
+
+Enum for automatic field name case conversion.
+
+| Value | Converts `first_name` to |
+|-------|--------------------------|
+| `LetterCase.CAMEL` | `firstName` |
+| `LetterCase.PASCAL` | `FirstName` |
+| `LetterCase.SNAKE` | `first_name` (no-op) |
+| `LetterCase.KEBAB` | `first-name` |
+
 ### `GlobalConfig`
 
-Internal configuration object stored on each decorated class. You do not normally need to use this directly — `@dataclass_json` parameters map onto it automatically. Exported for advanced use cases (e.g. inspecting a class's configuration at runtime).
+Internal configuration object stored on each decorated class as `__fieldmarshal_config__`. You do not normally need to use this directly — `@dataclass_json` parameters map onto it automatically. Exported for advanced use cases (e.g. inspecting a class's configuration at runtime).
 
 ```python
 from fieldmarshal import GlobalConfig
