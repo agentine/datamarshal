@@ -226,6 +226,22 @@ Decorator that adds serialization methods to a dataclass.
 - `from_dict(data: dict) -> Self` — class method, reconstruct from dict
 - `from_json(s: str, **kwargs) -> Self` — class method, reconstruct from JSON string
 
+### `GlobalConfig`
+
+Internal configuration object stored on each decorated class. You do not normally need to use this directly — `@dataclass_json` parameters map onto it automatically. Exported for advanced use cases (e.g. inspecting a class's configuration at runtime).
+
+```python
+from fieldmarshal import GlobalConfig
+
+cfg = MyModel.__fieldmarshal_config__  # GlobalConfig instance
+print(cfg.letter_case)  # LetterCase.CAMEL or None
+print(cfg.strict)       # True or False
+```
+
+**Fields:**
+- `letter_case` (`LetterCase | None`) — active case conversion, or `None` for no conversion
+- `strict` (`bool`, default `True`) — whether unknown fields and type mismatches raise errors
+
 ## License
 
 MIT
