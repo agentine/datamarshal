@@ -4,14 +4,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from fieldmarshal import FieldConfig, LetterCase, dataclass_json
+from datamarshal import FieldConfig, LetterCase, dataclass_json
 
 
 @dataclass_json
 @dataclass
 class WithRename:
     user_name: str = field(
-        metadata={"fieldmarshal": FieldConfig(field_name="userName")}
+        metadata={"datamarshal": FieldConfig(field_name="userName")}
     )
     email: str = ""
 
@@ -21,7 +21,7 @@ class WithRename:
 class WithExclude:
     name: str
     password: str = field(
-        metadata={"fieldmarshal": FieldConfig(exclude=True, default="secret")}
+        metadata={"datamarshal": FieldConfig(exclude=True, default="secret")}
     )
 
 
@@ -31,7 +31,7 @@ class WithExcludeNoFcDefault:
     name: str
     internal: str = field(
         default="fallback",
-        metadata={"fieldmarshal": FieldConfig(exclude=True)},
+        metadata={"datamarshal": FieldConfig(exclude=True)},
     )
 
 
@@ -55,7 +55,7 @@ class KebabModel:
 class WithCustomEncoder:
     value: int = field(
         metadata={
-            "fieldmarshal": FieldConfig(
+            "datamarshal": FieldConfig(
                 encoder=lambda v: v * 2,
                 decoder=lambda v: v // 2,
             )

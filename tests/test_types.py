@@ -11,7 +11,7 @@ from uuid import UUID
 
 import pytest
 
-from fieldmarshal import dataclass_json
+from datamarshal import dataclass_json
 
 
 class Color(Enum):

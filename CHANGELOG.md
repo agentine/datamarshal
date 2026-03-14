@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file.
 - Collection type support: `list`, `dict`, `set`, `tuple`, `Optional`, `Union`
 - `FieldConfig` for per-field configuration: rename, exclude, custom encoder/decoder, default value
 - `LetterCase` enum with `CAMEL`, `PASCAL`, `SNAKE`, `KEBAB` for automatic field name conversion
-- `GlobalConfig` for per-class configuration (accessible via `__fieldmarshal_config__`)
+- `GlobalConfig` for per-class configuration (accessible via `__datamarshal_config__`)
 - Built-in type handlers: `datetime`, `date`, `time`, `UUID`, `Decimal`, `Enum`, `Path`, `bytes`
 - Strict mode (default): raises on unknown fields and type mismatches
 - Lenient mode (`strict=False`): ignores unknown fields, coerces primitive types

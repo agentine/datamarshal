@@ -1,5 +1,5 @@
 [project]
-name = "fieldmarshal"
+name = "datamarshal"
 version = "0.1.0"
 description = "A modern, lightweight dataclass serialization library for Python — the better alternative to dataclasses-json"
 readme = "README.md"
@@ -22,20 +22,21 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/agentine/fieldmarshal"
-Repository = "https://github.com/agentine/fieldmarshal"
+Homepage = "https://github.com/agentine/datamarshal"
+Repository = "https://github.com/agentine/datamarshal"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/fieldmarshal"]
+packages = ["src/datamarshal"]
 
 [dependency-groups]
 dev = [
     "mypy>=1.19",
     "pytest>=9.0",
+    "pytest-cov>=7.0.0",
     "ruff>=0.11",
 ]
 

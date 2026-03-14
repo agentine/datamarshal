@@ -6,16 +6,16 @@ import dataclasses
 import json
 from typing import Any, TypeVar
 
-from fieldmarshal._compat import get_args, get_origin, get_resolved_hints
-from fieldmarshal.config import (
+from datamarshal._compat import get_args, get_origin, get_resolved_hints
+from datamarshal.config import (
     _MISSING,
     FieldConfig,
     GlobalConfig,
     convert_case,
     get_field_config,
 )
-from fieldmarshal.encoders import get_encoder
-from fieldmarshal.types import (
+from datamarshal.encoders import get_encoder
+from datamarshal.types import (
     get_union_args,
     is_dataclass_type,
     is_generic_dict,
@@ -131,7 +131,7 @@ def _encode_value(val: Any, type_hint: Any, fc: FieldConfig | None) -> Any:
 def _to_dict_inner(obj: Any) -> dict[str, Any]:
     """Convert a dataclass instance to a dict (inner recursive call)."""
     cls = type(obj)
-    config = getattr(cls, "__fieldmarshal_config__", GlobalConfig())
+    config = getattr(cls, "__datamarshal_config__", GlobalConfig())
     meta = _build_class_meta(cls, config)
     result: dict[str, Any] = {}
 
@@ -211,7 +211,7 @@ def _decode_value(val: Any, type_hint: Any, fc: FieldConfig | None, strict: bool
         }
 
     # Built-in type decoders
-    from fieldmarshal.decoders import get_decoder
+    from datamarshal.decoders import get_decoder
 
     if isinstance(type_hint, type):
         decoder = get_decoder(type_hint)
@@ -235,7 +235,7 @@ def _decode_value(val: Any, type_hint: Any, fc: FieldConfig | None, strict: bool
 
 def _from_dict_inner(cls: type, data: dict[str, Any]) -> Any:
     """Reconstruct a dataclass instance from a dict (inner recursive call)."""
-    config = getattr(cls, "__fieldmarshal_config__", GlobalConfig())
+    config = getattr(cls, "__datamarshal_config__", GlobalConfig())
     meta = _build_class_meta(cls, config)
     strict = config.strict
 
@@ -294,7 +294,7 @@ def dataclass_json(
             )
 
         config = GlobalConfig(letter_case=letter_case, strict=strict)
-        cls.__fieldmarshal_config__ = config  # type: ignore[attr-defined]
+        cls.__datamarshal_config__ = config  # type: ignore[attr-defined]
 
         # Pre-build metadata cache
         _build_class_meta(cls, config)

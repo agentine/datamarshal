@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 
-from fieldmarshal import dataclass_json
+from datamarshal import dataclass_json
 
 
 @dataclass_json

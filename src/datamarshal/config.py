@@ -55,7 +55,7 @@ def convert_case(name: str, case: LetterCase) -> str:
 class FieldConfig:
     """Per-field serialization configuration.
 
-    Used via: dataclasses.field(metadata={"fieldmarshal": FieldConfig(...)})
+    Used via: dataclasses.field(metadata={"datamarshal": FieldConfig(...)})
     """
 
     field_name: str | None = None
@@ -75,5 +75,5 @@ class GlobalConfig:
 
 def get_field_config(field: dataclasses.Field[Any]) -> FieldConfig | None:
     """Extract FieldConfig from a dataclass field's metadata."""
-    val: FieldConfig | None = field.metadata.get("fieldmarshal")
+    val: FieldConfig | None = field.metadata.get("datamarshal")
     return val

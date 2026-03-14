@@ -6,7 +6,7 @@ import dataclasses
 import types
 from typing import Any, Union
 
-from fieldmarshal._compat import get_args, get_origin
+from datamarshal._compat import get_args, get_origin
 
 
 def is_dataclass_type(tp: Any) -> bool:

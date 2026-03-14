@@ -1,20 +1,20 @@
-# fieldmarshal
+# datamarshal
 
-[![PyPI](https://img.shields.io/pypi/v/fieldmarshal)](https://pypi.org/project/fieldmarshal/)
-[![Python](https://img.shields.io/pypi/pyversions/fieldmarshal)](https://pypi.org/project/fieldmarshal/)
+[![PyPI](https://img.shields.io/pypi/v/datamarshal)](https://pypi.org/project/datamarshal/)
+[![Python](https://img.shields.io/pypi/pyversions/datamarshal)](https://pypi.org/project/datamarshal/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 A modern, lightweight dataclass serialization library for Python — the better alternative to dataclasses-json.
 
 Zero dependencies. Python 3.10+.
 
-## Why fieldmarshal?
+## Why datamarshal?
 
 [dataclasses-json](https://github.com/lidatong/dataclasses-json) was the go-to library for dataclass JSON serialization, but its maintainer has stepped away and the project is effectively abandoned: no releases since June 2024, no Python 3.13+ support, broken marshmallow compatibility, and 159+ open issues.
 
-fieldmarshal is a clean replacement:
+datamarshal is a clean replacement:
 
-| | dataclasses-json | fieldmarshal |
+| | dataclasses-json | datamarshal |
 |---|---|---|
 | Dependencies | marshmallow, marshmallow-enum, typing-inspect | **None (stdlib only)** |
 | Python support | 3.7–3.12 | **3.10+ (including 3.13+)** |
@@ -25,14 +25,14 @@ fieldmarshal is a clean replacement:
 ## Install
 
 ```bash
-pip install fieldmarshal
+pip install datamarshal
 ```
 
 ## Quick Start
 
 ```python
 from dataclasses import dataclass
-from fieldmarshal import dataclass_json
+from datamarshal import dataclass_json
 
 @dataclass_json
 @dataclass
@@ -92,16 +92,16 @@ Rename fields, exclude fields, or use custom encoders/decoders via `FieldConfig`
 
 ```python
 from dataclasses import field
-from fieldmarshal import FieldConfig
+from datamarshal import FieldConfig
 
 @dataclass_json
 @dataclass
 class Model:
     user_name: str = field(
-        metadata={"fieldmarshal": FieldConfig(field_name="userName")}
+        metadata={"datamarshal": FieldConfig(field_name="userName")}
     )
     password: str = field(
-        metadata={"fieldmarshal": FieldConfig(exclude=True, default="secret")}
+        metadata={"datamarshal": FieldConfig(exclude=True, default="secret")}
     )
 
 m = Model(user_name="alice", password="hunter2")
@@ -123,7 +123,7 @@ print(m.to_dict())  # {"userName": "alice"}
 Automatically convert field names to camelCase, PascalCase, snake_case, or kebab-case:
 
 ```python
-from fieldmarshal import LetterCase
+from datamarshal import LetterCase
 
 @dataclass_json(letter_case=LetterCase.CAMEL)
 @dataclass
@@ -154,7 +154,7 @@ These types are automatically serialized/deserialized:
 
 ## Strict and Lenient Modes
 
-By default, fieldmarshal uses strict mode — unknown fields and type mismatches raise errors:
+By default, datamarshal uses strict mode — unknown fields and type mismatches raise errors:
 
 ```python
 @dataclass_json(strict=True)   # default
@@ -185,9 +185,9 @@ m = LenientModel.from_dict({"name": "A", "age": "42", "extra": True})
 
 ## Migrating from dataclasses-json
 
-fieldmarshal is a drop-in replacement for most dataclasses-json usage:
+datamarshal is a drop-in replacement for most dataclasses-json usage:
 
-| dataclasses-json | fieldmarshal |
+| dataclasses-json | datamarshal |
 |-----------------|--------------|
 | `@dataclass_json` | `@dataclass_json` |
 | `.to_json()` | `.to_json()` |
@@ -212,15 +212,15 @@ class User:
     user_name: str = field(metadata=config(field_name="userName"))
 ```
 
-### After (fieldmarshal)
+### After (datamarshal)
 
 ```python
-from fieldmarshal import dataclass_json, FieldConfig
+from datamarshal import dataclass_json, FieldConfig
 
 @dataclass_json
 @dataclass
 class User:
-    user_name: str = field(metadata={"fieldmarshal": FieldConfig(field_name="userName")})
+    user_name: str = field(metadata={"datamarshal": FieldConfig(field_name="userName")})
 ```
 
 ## API Reference
@@ -246,12 +246,12 @@ Decorator that adds serialization methods to a dataclass.
 
 ### `FieldConfig`
 
-Per-field serialization configuration. Pass via `dataclasses.field(metadata={"fieldmarshal": FieldConfig(...)})`.
+Per-field serialization configuration. Pass via `dataclasses.field(metadata={"datamarshal": FieldConfig(...)})`.
 
 ```python
 @dataclass
 class Model:
-    name: str = field(metadata={"fieldmarshal": FieldConfig(field_name="Name")})
+    name: str = field(metadata={"datamarshal": FieldConfig(field_name="Name")})
 ```
 
 **Fields:**
@@ -274,12 +274,12 @@ Enum for automatic field name case conversion.
 
 ### `GlobalConfig`
 
-Internal configuration object stored on each decorated class as `__fieldmarshal_config__`. You do not normally need to use this directly — `@dataclass_json` parameters map onto it automatically. Exported for advanced use cases (e.g. inspecting a class's configuration at runtime).
+Internal configuration object stored on each decorated class as `__datamarshal_config__`. You do not normally need to use this directly — `@dataclass_json` parameters map onto it automatically. Exported for advanced use cases (e.g. inspecting a class's configuration at runtime).
 
 ```python
-from fieldmarshal import GlobalConfig
+from datamarshal import GlobalConfig
 
-cfg = MyModel.__fieldmarshal_config__  # GlobalConfig instance
+cfg = MyModel.__datamarshal_config__  # GlobalConfig instance
 print(cfg.letter_case)  # LetterCase.CAMEL or None
 print(cfg.strict)       # True or False
 ```
